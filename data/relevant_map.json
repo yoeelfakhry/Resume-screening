@@ -1,0 +1,21 @@
+{
+  "Software Engineer": [
+    "INFORMATION-TECHNOLOGY"
+  ],
+  "Business Development Manager": [
+    "BUSINESS-DEVELOPMENT"
+  ],
+  "Electrical Engineer": [
+    "ENGINEERING"
+  ],
+  "Accountant": [
+    "ACCOUNTANT"
+  ],
+  "Financial Analyst": [
+    "BANKING",
+    "FINANCE"
+  ],
+  "HR Manager": [
+    "HR"
+  ]
+}

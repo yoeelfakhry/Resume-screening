@@ -1,0 +1,7 @@
+pandas
+numpy
+pyyaml
+pyarrow
+faiss-cpu
+sentence-transformers
+openpyxl

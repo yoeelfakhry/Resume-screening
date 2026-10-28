@@ -1,0 +1,42 @@
+seed: 42 
+
+model:
+  name: sentence-transformers/all-MiniLM-L6-v2
+  embed_dim  : 384
+  max_tokens : 256
+  batch_size : 32       
+
+paths:
+  data_dir     : data
+  artifact_dir : artifacts
+  cache_dir    : cache
+
+data_files:
+  resumes_csv : Resume.csv   
+  judgments  : judge.xlsx  
+  resumes_reference: resumes_reference.parquet   # regression fixture: diff data.py against this
+  jobs_eval: jobs_eval.parquet                   # evaluation queries (title + description_clean)
+  relevant_map: relevant_map.json 
+
+
+artifacts:
+  index: head_index.faiss
+  resumes: resumes.parquet
+  embeddings: head_embs.npy
+  meta: meta.json
+
+columns:
+  resume_text: Resume_str_clean
+  resume_category: Category
+  job_title: title
+  job_text: description_clean
+
+
+retrieval:
+  top_k: 10      
+
+
+
+evaluation:
+  min_jd_words: 150       # a shorter job description is a stub, not a query
+  n_jds: 15 
