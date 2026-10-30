@@ -54,3 +54,67 @@ def fingerprint(texts: Sequence[str]) -> str:
     return h.hexdigest()[:10]
 
 
+if __name__ == "__main__":
+    ok = 0
+
+    def check(label, condition):
+        global ok
+        assert condition, f"FAILED: {label}"
+        ok += 1
+        print(f"  ok  {label}")
+
+    good = np.zeros((3, 4), dtype="float32")
+    # ============ الفحوصات تتحط من هنا ============
+    check("prep converts float64 to float32",
+        prep(np.zeros((3, 4))).dtype == np.float32)
+
+    try:
+        check_embeddings(np.zeros((5, 8)), "test")
+    except AssertionError:
+        check("check_embeddings rejects float64", True)
+    else:
+        check("check_embeddings rejects float64", False)
+
+    check("prep makes a transpose contiguous",
+          prep(np.zeros((4, 3)).T).flags["C_CONTIGUOUS"])
+
+    check("prep is a no-op when the array is already correct",
+          prep(good) is good)
+
+    check("check_embeddings accepts a good array and returns it",
+          check_embeddings(good, "test", 3) is good)
+
+    check("same texts give the same hash",
+          fingerprint(["a", "b"]) == fingerprint(["a", "b"]))
+
+    check("one character changes the hash",
+          fingerprint(["a", "b"]) != fingerprint(["a", "c"]))
+
+    check("order matters",
+          fingerprint(["a", "b"]) != fingerprint(["b", "a"]))
+
+    check("the separator prevents a collision",
+          fingerprint(["ab", "c"]) != fingerprint(["a", "bc"]))
+
+    try:
+        check_embeddings(np.zeros(8, dtype="float32"), "test")
+    except AssertionError:
+        check("check_embeddings rejects a 1-D array", True)
+    else:
+        check("check_embeddings rejects a 1-D array", False)
+
+    try:
+        check_embeddings(np.zeros((8, 5), dtype="float32").T, "test")
+    except AssertionError:
+        check("check_embeddings rejects a non-contiguous array", True)
+    else:
+        check("check_embeddings rejects a non-contiguous array", False)
+
+    try:
+        check_embeddings(good, "test", 99)
+    except AssertionError:
+        check("check_embeddings rejects a wrong row count", True)
+    else:
+        check("check_embeddings rejects a wrong row count", False)
+
+    print(f"\n{ok} checks passed")
