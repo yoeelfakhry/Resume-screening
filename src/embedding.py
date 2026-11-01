@@ -67,8 +67,8 @@ def load_encoder() -> SentenceTransformer:
         SentenceTransformer: encoder object
     """
     model = SentenceTransformer(MODEL_NAME)
-    assert model.get_sentence_embedding_dimension() == EMBED_DIM, \
-    f"model dimension is {model.get_sentence_embedding_dimension()}, expected {EMBED_DIM}"
+    assert model.get_embedding_dimension() == EMBED_DIM, \
+    f"model dimension is {model.get_embedding_dimension()}, expected {EMBED_DIM}"
     assert model.max_seq_length == MODEL_MAX_TOKENS, \
     f"model max sequence length is {model.max_seq_length}, expected {MODEL_MAX_TOKENS}"
     model._model_tag = MODEL_NAME.split("/")[-1]
