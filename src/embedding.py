@@ -119,7 +119,7 @@ def encode_texts(texts: Sequence[str] , encoder: SentenceTransformer , cache_key
     # Make sure the texts are a sequence of strings 
     texts = [str(t) for t in texts]
 
-    path=0
+    path = None 
 
     if cache_key is not None:
         CACHE_DIR.mkdir(parents=True, exist_ok=True)
